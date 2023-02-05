@@ -6,13 +6,93 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "mysql"
   url      = env("DATABASE_URL")
 }
 
 model User {
-  id       String @id @default(cuid())
-  email    String @unique
-  username String @unique
-  password String
+  id        String   @id @default(uuid())
+  email     String   @unique
+  username  String   @unique
+  password  String
+  fullname  String
+  createdAt DateTime @default(now())
+
+  @@map("users")
+}
+
+model Plant {
+  id               String   @id @default(uuid())
+  name             String
+  soakingTime      Int?
+  startDateHarvest Int
+  endDateHarvest   Int
+  shootsAppear     Int
+  createdAt        DateTime @default(now())
+
+  plains    Plain[]
+  locations Location[]
+  items     Item[]
+  targets   Target[]
+
+  @@map("plants")
+}
+
+model Plain {
+  id        String   @id @default(uuid())
+  plain     Int
+  plantId   String
+  createdAt DateTime @default(now())
+
+  plant Plant @relation(fields: [plantId], references: [id], onDelete: Cascade)
+
+  @@map("plains")
+}
+
+model Location {
+  id        String   @id @default(uuid())
+  location  Int
+  plantId   String
+  createdAt DateTime @default(now())
+
+  plant Plant @relation(fields: [plantId], references: [id], onDelete: Cascade)
+
+  @@map("locations")
+}
+
+model Schedule {
+  id          String   @id @default(uuid())
+  name        String
+  description String?  @db.Text
+  createdAt   DateTime @default(now())
+
+  items Item[]
+
+  @@map("schedules")
+}
+
+model Item {
+  id         String   @id @default(uuid())
+  scheduleId String
+  plantId    String
+  startDate  DateTime
+  status     Int
+  createdAt  DateTime @default(now())
+
+  schedule Schedule @relation(fields: [scheduleId], references: [id], onDelete: Cascade)
+  plant    Plant    @relation(fields: [plantId], references: [id], onDelete: Cascade)
+
+  @@map("items")
+}
+
+model Target {
+  id         String   @id @default(uuid())
+  plantId    String
+  targetDate DateTime
+  whenStatus Int
+  createdAt  DateTime @default(now())
+
+  plant Plant @relation(fields: [plantId], references: [id], onDelete: Cascade)
+
+  @@map("targets")
 }
