@@ -1,7 +1,7 @@
 {
-  "name": "typescript-express-prisma-starter",
+  "name": "plant-scheduler-service",
   "version": "0.0.1",
-  "description": "Minyma starter template for a Typescript, Express application with development tools preconfigured",
+  "description": "PLant Scheduler Service",
   "main": "src/main.ts",
   "scripts": {
     "build": "tsc",
@@ -10,11 +10,9 @@
     "lint": "eslint . --ext .ts --quiet && prettier --check .",
     "lint:fix": "eslint . --ext .ts --fix --quiet && prettier --write .",
     "start:dev": "NODE_ENV=dev tsx watch src/main.ts",
-    "start:prod": "npm run build && NODE_ENV=prod node dist/src/main.js",
-    "commit": "cz",
-    "prepare": "husky install"
+    "start:prod": "npm run build && NODE_ENV=prod node dist/src/main.js"
   },
-  "author": "godraadam",
+  "author": "agyanatma",
   "license": "ISC",
   "dependencies": {
     "@prisma/client": "^4.6.1",
